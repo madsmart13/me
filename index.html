@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LMC | Gaming HUD</title>
+<title>LMC | </title>
 
 <!-- 🔐 Steam Safe Meta -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
 <meta name="robots" content="index, follow">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="theme-color" content="#05070c">
-<meta name="description" content="LMC Cyber Gaming Profile | Steam Safe">
+<meta name="description" content="LMC Advanced FPS Gaming Profile | Steam Safe">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LMC Gaming HUD">
 <meta property="og:image" content="bg.jpg">
@@ -27,26 +27,34 @@ margin:0;background:#000;color:#fff;
 overflow-x:hidden
 }
 
-/* Background Image (Clear) */
+/* Background */
 .bg{
 position:fixed;inset:0;
 background:url('bg.jpg') center/contain no-repeat;
-opacity:.35;
-z-index:-4
+filter:blur(4px) brightness(.5);
+z-index:-5
 }
 
-/* Side Beat Glow */
+/* Side Equalizers */
 .side{
-position:fixed;top:0;bottom:0;width:15vw;
-background:radial-gradient(circle,#00ffff44,#000);
-z-index:-3;opacity:.6
+position:fixed;top:0;bottom:0;width:14vw;
+display:flex;align-items:flex-end;
+gap:4px;padding:10px;
+z-index:-3
 }
 .side.left{left:0}
-.side.right{right:0}
+.side.right{right:0;flex-direction:row-reverse}
+.bar-side{
+width:6px;
+background:linear-gradient(180deg,#0ff,#06f);
+border-radius:4px;
+height:20px;
+opacity:.8
+}
 
-/* Rain Glass */
+/* Rain */
 #rain{
-position:fixed;inset:0;z-index:-2
+position:fixed;inset:0;z-index:-4
 }
 
 /* Layout */
@@ -57,22 +65,23 @@ max-width:900px;margin:auto;padding:30px
 /* Player HUD */
 .player{
 background:#050912ee;
-border-radius:20px;
+border-radius:22px;
 padding:25px;
-box-shadow:0 0 60px #0ff5;
-border:1px solid #0ff3
+border:1px solid #0ff4;
+box-shadow:0 0 50px #0ff5
 }
-.player h1{margin:0;text-align:center}
+.player h1{text-align:center;margin-top:0}
 
 /* Controls */
 .controls{
-display:flex;justify-content:center;gap:25px;
-margin:15px 0
+display:flex;justify-content:center;
+gap:28px;margin:15px 0
 }
 .controls i{
-font-size:30px;color:#0ff;
+font-size:32px;color:#0ff;
 cursor:pointer
 }
+.controls i:hover{transform:scale(1.25)}
 
 /* Progress */
 .progress{
@@ -83,36 +92,43 @@ border-radius:10px;cursor:pointer
 height:100%;width:0%;
 background:linear-gradient(90deg,#0ff,#06f)
 }
-.time{font-size:12px;color:#aaa;text-align:center}
+.time{text-align:center;font-size:12px;color:#aaa}
 
 /* Playlist */
-.playlist{
-margin-top:15px
-}
+.playlist{margin-top:15px}
 .track{
-padding:6px;cursor:pointer
+display:flex;align-items:center;
+gap:10px;padding:8px;
+cursor:pointer;
+border-radius:10px
 }
-.track.active{color:#0ff}
+.track i{color:#0ff}
+.track.active{
+background:#0ff2;
+box-shadow:0 0 15px #0ff
+}
 
 /* About */
 .about{
 margin-top:30px;
 background:#060b15cc;
-border-radius:20px;
+border-radius:22px;
 padding:20px;
 border:1px solid #0ff3
 }
 .field{
-display:flex;align-items:center;margin:8px 0
+display:flex;align-items:center;
+margin:8px 0
 }
 .field i{width:25px;color:#0ff}
 
 /* Steam Button */
 .steam-btn{
 position:fixed;top:20px;right:20px;
-background:linear-gradient(45deg,#0ff,#06f);
 padding:12px 18px;border-radius:40px;
-color:#000;font-weight:bold;text-decoration:none
+background:linear-gradient(45deg,#0ff,#06f);
+color:#000;font-weight:bold;text-decoration:none;
+z-index:10
 }
 </style>
 </head>
@@ -120,8 +136,11 @@ color:#000;font-weight:bold;text-decoration:none
 <body onclick="unlock()">
 
 <div class="bg"></div>
-<div class="side left"></div>
-<div class="side right"></div>
+
+<!-- Side Equalizers -->
+<div class="side left" id="leftEq"></div>
+<div class="side right" id="rightEq"></div>
+
 <canvas id="rain"></canvas>
 
 <a class="steam-btn" target="_blank"
@@ -131,7 +150,8 @@ href="https://steamcommunity.com/id/M_LMC/">
 
 <div class="container" id="scene">
 
-<div class="player" id="player">
+<!-- Player -->
+<div class="player">
 <h1>LMC MUSIC HUD</h1>
 
 <audio id="audio" autoplay muted></audio>
@@ -153,14 +173,17 @@ oninput="audio.volume=this.value">
 
 <div class="playlist">
 <div class="track active" onclick="setTrack(0)">
+<i class="fa fa-circle-play"></i>
 Mvshreghi – Vasam Ajib Bood
 </div>
 <div class="track" onclick="setTrack(1)">
+<i class="fa fa-circle-play"></i>
 Mvshreghi – Adhd
 </div>
 </div>
 </div>
 
+<!-- About -->
 <div class="about">
 <div class="field"><i class="fa fa-user"></i>Age: 20</div>
 <div class="field"><i class="fa fa-clock"></i>Timeplay CS: 800h</div>
@@ -178,20 +201,20 @@ const tracks=[
 'https://dl.godpori.com/04/05/Mvshreghi%20-%20Vasam%20Ajib%20Bood%20[128].mp3',
 'https://dl.bandmusic.ir/files/mp3/s1/01%20Mvshreghi%20-%20Adhd.mp3'
 ];
-let i=0;
+let index=0;
 const audio=document.getElementById('audio');
-audio.src=tracks[i];
+audio.src=tracks[index];
 
 function unlock(){audio.muted=false;audio.play()}
 function playMusic(){audio.play()}
 function stopMusic(){audio.pause();audio.currentTime=0}
-function next(){i=(i+1)%tracks.length;set()}
-function prev(){i=(i-1+tracks.length)%tracks.length;set()}
-function setTrack(n){i=n;set()}
+function next(){index=(index+1)%tracks.length;set()}
+function prev(){index=(index-1+tracks.length)%tracks.length;set()}
+function setTrack(i){index=i;set()}
 function set(){
-audio.src=tracks[i];audio.play();
+audio.src=tracks[index];audio.play();
 document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
-document.querySelectorAll('.track')[i].classList.add('active');
+document.querySelectorAll('.track')[index].classList.add('active');
 }
 
 /* Progress */
@@ -199,26 +222,52 @@ audio.ontimeupdate=()=>{
 bar.style.width=(audio.currentTime/audio.duration*100)+'%';
 }
 
+/* Side Equalizer */
+const left=document.getElementById('leftEq');
+const right=document.getElementById('rightEq');
+for(let i=0;i<20;i++){
+left.innerHTML+='<div class="bar-side"></div>';
+right.innerHTML+='<div class="bar-side"></div>';
+}
+
+/* Audio Analysis */
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+const src=ctx.createMediaElementSource(audio);
+const analyser=ctx.createAnalyser();
+analyser.fftSize=64;
+src.connect(analyser);
+analyser.connect(ctx.destination);
+const data=new Uint8Array(analyser.frequencyBinCount);
+
+function equalizer(){
+analyser.getByteFrequencyData(data);
+document.querySelectorAll('.bar-side').forEach((b,i)=>{
+b.style.height=(data[i%data.length]/2+10)+'px';
+});
+requestAnimationFrame(equalizer);
+}
+equalizer();
+
 /* Rain Glass */
 const c=document.getElementById('rain');
 const x=c.getContext('2d');
 c.width=innerWidth;c.height=innerHeight;
 const drops=[];
 for(let i=0;i<120;i++)
-drops.push({x:Math.random()*c.width,y:Math.random()*c.height,s:2+Math.random()*4});
+drops.push({x:Math.random()*c.width,y:Math.random()*c.height,r:2+Math.random()*3,s:1+Math.random()*2});
 
 function rain(){
 x.clearRect(0,0,c.width,c.height);
-x.strokeStyle='#0ff';
 drops.forEach(d=>{
 x.beginPath();
-x.moveTo(d.x,d.y);
-x.lineTo(d.x,d.y+14);
-x.stroke();
+x.arc(d.x,d.y,d.r,0,Math.PI*2);
+x.fillStyle='rgba(180,255,255,.6)';
+x.fill();
 d.y+=d.s;
 if(d.y>c.height){
 x.beginPath();
 x.arc(d.x,c.height,8,0,Math.PI*2);
+x.strokeStyle='rgba(180,255,255,.3)';
 x.stroke();
 d.y=0;
 }
