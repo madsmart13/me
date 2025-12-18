@@ -10,10 +10,13 @@
 <meta name="robots" content="index, follow">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="theme-color" content="#05070c">
-<meta name="description" content="LMC Advanced FPS Gaming Profile | Steam Safe">
+<meta name="description" content="LMC Dark Gaming Music Profile | Steam Safe | GitHub Pages">
+
 <meta property="og:type" content="website">
-<meta property="og:title" content="LMC Gaming HUD">
+<meta property="og:title" content="LMC Gaming">
+<meta property="og:description" content="Dark Neon Gaming profile with music player">
 <meta property="og:image" content="bg.jpg">
+
 <meta http-equiv="Content-Security-Policy"
 content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'">
 
@@ -23,112 +26,112 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <style>
 *{box-sizing:border-box;font-family:Segoe UI,sans-serif}
 body{
-margin:0;background:#000;color:#fff;
-overflow-x:hidden
+margin:0;color:#fff;min-height:100vh;
+background:#000;overflow:hidden
 }
 
 /* Background */
 .bg{
 position:fixed;inset:0;
-background:url('bg.jpg') center/contain no-repeat;
-filter:blur(4px) brightness(.5);
-z-index:-5
-}
-
-/* Side Equalizers */
-.side{
-position:fixed;top:0;bottom:0;width:14vw;
-display:flex;align-items:flex-end;
-gap:4px;padding:10px;
+background:url('bg.jpg') center/cover no-repeat;
+filter:blur(6px) brightness(.6);
 z-index:-3
 }
-.side.left{left:0}
-.side.right{right:0;flex-direction:row-reverse}
-.bar-side{
-width:6px;
-background:linear-gradient(180deg,#0ff,#06f);
-border-radius:4px;
-height:20px;
-opacity:.8
+.overlay{
+position:fixed;inset:0;
+background:radial-gradient(circle,#00ffff22,#000c);
+z-index:-2
 }
 
-/* Rain */
-#rain{
-position:fixed;inset:0;z-index:-4
-}
-
-/* Layout */
-.container{
-max-width:900px;margin:auto;padding:30px
-}
-
-/* Player HUD */
-.player{
-background:#050912ee;
-border-radius:22px;
+/* HUD Frame */
+.hud{
+border:2px solid #00ffff55;
+border-radius:25px;
 padding:25px;
-border:1px solid #0ff4;
-box-shadow:0 0 50px #0ff5
+box-shadow:0 0 40px #00ffff33;
+background:#05070cdd;
+position:relative
 }
-.player h1{text-align:center;margin-top:0}
-
-/* Controls */
-.controls{
-display:flex;justify-content:center;
-gap:28px;margin:15px 0
-}
-.controls i{
-font-size:32px;color:#0ff;
-cursor:pointer
-}
-.controls i:hover{transform:scale(1.25)}
-
-/* Progress */
-.progress{
-height:8px;background:#111;
-border-radius:10px;cursor:pointer
-}
-.bar{
-height:100%;width:0%;
-background:linear-gradient(90deg,#0ff,#06f)
-}
-.time{text-align:center;font-size:12px;color:#aaa}
-
-/* Playlist */
-.playlist{margin-top:15px}
-.track{
-display:flex;align-items:center;
-gap:10px;padding:8px;
-cursor:pointer;
-border-radius:10px
-}
-.track i{color:#0ff}
-.track.active{
-background:#0ff2;
-box-shadow:0 0 15px #0ff
-}
-
-/* About */
-.about{
-margin-top:30px;
-background:#060b15cc;
-border-radius:22px;
-padding:20px;
-border:1px solid #0ff3
-}
-.field{
-display:flex;align-items:center;
-margin:8px 0
-}
-.field i{width:25px;color:#0ff}
 
 /* Steam Button */
 .steam-btn{
 position:fixed;top:20px;right:20px;
 padding:12px 18px;border-radius:40px;
-background:linear-gradient(45deg,#0ff,#06f);
-color:#000;font-weight:bold;text-decoration:none;
+background:linear-gradient(45deg,#00ffff,#0066ff);
+color:#000;font-weight:bold;
+text-decoration:none;
+box-shadow:0 0 25px #00ffff;
 z-index:10
+}
+
+/* Layout */
+.container{
+max-width:1100px;margin:auto;padding:30px
+}
+
+/* Player */
+.player h1{margin:0 0 10px;letter-spacing:3px}
+.controls i{
+font-size:30px;margin:15px;
+cursor:pointer;color:#00ffff;
+transition:.3s
+}
+.controls i:hover{transform:scale(1.3)}
+.volume{width:180px}
+
+/* Playlist */
+.playlist div{
+display:flex;align-items:center;
+gap:10px;cursor:pointer;
+margin:6px 0;padding:6px;
+border-radius:10px;
+transition:.3s
+}
+.playlist div:hover{
+background:#00ffff22
+}
+.playlist i{color:#00ffff}
+
+/* About */
+.about{
+margin-top:35px;
+background:#070a12ee;
+border-radius:25px;
+padding:25px
+}
+.field{
+display:flex;align-items:center;
+margin:10px 0
+}
+.field i{width:30px;color:#00ffff}
+
+/* Visualizer */
+#viz{width:100%;height:120px}
+
+/* Side EQ */
+.eq{
+position:fixed;top:0;bottom:0;
+width:60px;display:flex;
+flex-direction:column;
+justify-content:center;
+gap:6px;z-index:1
+}
+.eq.left{left:0}
+.eq.right{right:0}
+.eq span{
+flex:1;background:#00ffff;
+opacity:.2;border-radius:6px
+}
+
+/* Rain Drops */
+.drop{
+position:fixed;
+width:10px;height:10px;
+border-radius:50%;
+background:rgba(255,255,255,.25);
+backdrop-filter:blur(2px);
+box-shadow:inset -2px -2px 6px rgba(255,255,255,.4);
+pointer-events:none
 }
 </style>
 </head>
@@ -136,63 +139,65 @@ z-index:10
 <body onclick="unlock()">
 
 <div class="bg"></div>
-
-<!-- Side Equalizers -->
-<div class="side left" id="leftEq"></div>
-<div class="side right" id="rightEq"></div>
-
-<canvas id="rain"></canvas>
+<div class="overlay"></div>
 
 <a class="steam-btn" target="_blank"
 href="https://steamcommunity.com/id/M_LMC/">
-<i class="fab fa-steam"></i> Add Friend
+<i class="fab fa-steam"></i> **Add Friend **
 </a>
 
-<div class="container" id="scene">
+<div class="eq left" id="eqL"></div>
+<div class="eq right" id="eqR"></div>
 
-<!-- Player -->
+<div class="container">
+<div class="hud" id="scene">
+
+<!-- 🎵 Player -->
 <div class="player">
-<h1>LMC MUSIC HUD</h1>
+<h1>LMC MUSIC</h1>
 
 <audio id="audio" autoplay muted></audio>
 
 <div class="controls">
 <i class="fa fa-backward" onclick="prev()"></i>
 <i class="fa fa-play" onclick="playMusic()"></i>
-<i class="fa fa-stop" onclick="stopMusic()"></i>
 <i class="fa fa-forward" onclick="next()"></i>
 </div>
 
-<div class="progress" onclick="seek(event)">
-<div class="bar" id="bar"></div>
-</div>
-<div class="time" id="time">0:00 / 0:00</div>
-
-<input type="range" min="0" max="1" step="0.01"
+<input class="volume" type="range" min="0" max="1" step="0.01"
 oninput="audio.volume=this.value">
 
 <div class="playlist">
-<div class="track active" onclick="setTrack(0)">
-<i class="fa fa-circle-play"></i>
-Mvshreghi – Vasam Ajib Bood
+<div onclick="setTrack(0)">
+<i class="fa fa-music"></i> Vasam Ajib Bood
 </div>
-<div class="track" onclick="setTrack(1)">
-<i class="fa fa-circle-play"></i>
-Mvshreghi – Adhd
-</div>
+<div onclick="setTrack(1)">
+<i class="fa fa-music"></i> Adhd
 </div>
 </div>
 
-<!-- About -->
+<canvas id="viz"></canvas>
+</div>
+
+<!-- ℹ️ About -->
 <div class="about">
+<h2>About Me</h2>
 <div class="field"><i class="fa fa-user"></i>Age: 20</div>
 <div class="field"><i class="fa fa-clock"></i>Timeplay CS: 800h</div>
 <div class="field"><i class="fa fa-ranking-star"></i>Rank: 12000</div>
+<div class="field"><i class="fa fa-gamepad"></i>Games: 12</div>
 <div class="field"><i class="fa fa-layer-group"></i>Steam Level: 22</div>
+<div class="field"><i class="fa fa-location-dot"></i>Iran / Markazi / Khomain</div>
+<a class="steam-btn" style="position:static;display:inline-block;margin-top:10px"
+target="_blank"
+href="https://www.google.com/maps/search/Khomain+Markazi+Iran">
+Search Location
+</a>
 <div class="field"><i class="fab fa-discord"></i>@mahdiyar_lmc</div>
 <div class="field"><i class="fa fa-quote-left"></i>داریوشم ولی بی‌اقبال</div>
 </div>
 
+</div>
 </div>
 
 <script>
@@ -201,80 +206,79 @@ const tracks=[
 'https://dl.godpori.com/04/05/Mvshreghi%20-%20Vasam%20Ajib%20Bood%20[128].mp3',
 'https://dl.bandmusic.ir/files/mp3/s1/01%20Mvshreghi%20-%20Adhd.mp3'
 ];
-let index=0;
+let idx=0;
 const audio=document.getElementById('audio');
-audio.src=tracks[index];
+audio.src=tracks[idx];
 
-function unlock(){audio.muted=false;audio.play()}
+function unlock(){audio.muted=false;ctx.resume()}
 function playMusic(){audio.play()}
-function stopMusic(){audio.pause();audio.currentTime=0}
-function next(){index=(index+1)%tracks.length;set()}
-function prev(){index=(index-1+tracks.length)%tracks.length;set()}
-function setTrack(i){index=i;set()}
-function set(){
-audio.src=tracks[index];audio.play();
-document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
-document.querySelectorAll('.track')[index].classList.add('active');
-}
+function setTrack(i){idx=i;audio.src=tracks[i];audio.play()}
+function next(){setTrack((idx+1)%tracks.length)}
+function prev(){setTrack((idx-1+tracks.length)%tracks.length)}
 
-/* Progress */
-audio.ontimeupdate=()=>{
-bar.style.width=(audio.currentTime/audio.duration*100)+'%';
-}
-
-/* Side Equalizer */
-const left=document.getElementById('leftEq');
-const right=document.getElementById('rightEq');
-for(let i=0;i<20;i++){
-left.innerHTML+='<div class="bar-side"></div>';
-right.innerHTML+='<div class="bar-side"></div>';
-}
-
-/* Audio Analysis */
-const ctx=new (window.AudioContext||window.webkitAudioContext)();
+/* Audio Context */
+const AC=window.AudioContext||window.webkitAudioContext;
+const ctx=new AC();
 const src=ctx.createMediaElementSource(audio);
 const analyser=ctx.createAnalyser();
-analyser.fftSize=64;
+analyser.fftSize=128;
 src.connect(analyser);
 analyser.connect(ctx.destination);
+
+/* Visualizer + Shake */
+const c=document.getElementById('viz');
+const g=c.getContext('2d');
+function rs(){c.width=c.offsetWidth;c.height=c.offsetHeight}
+onresize=rs;rs();
 const data=new Uint8Array(analyser.frequencyBinCount);
 
-function equalizer(){
+function draw(){
+requestAnimationFrame(draw);
 analyser.getByteFrequencyData(data);
-document.querySelectorAll('.bar-side').forEach((b,i)=>{
-b.style.height=(data[i%data.length]/2+10)+'px';
-});
-requestAnimationFrame(equalizer);
+g.clearRect(0,0,c.width,c.height);
+let bass=0;
+for(let i=0;i<data.length;i++){
+let h=data[i];
+if(i<6) bass+=h;
+g.fillStyle='#00ffff';
+g.fillRect(i*10,c.height-h/2,8,h/2);
 }
-equalizer();
+let s=bass/250;
+scene.style.transform=`translate(${(Math.random()-.5)*s}px,${(Math.random()-.5)*s}px)`;
+updateEQ(bass);
+}
+draw();
 
-/* Rain Glass */
-const c=document.getElementById('rain');
-const x=c.getContext('2d');
-c.width=innerWidth;c.height=innerHeight;
-const drops=[];
-for(let i=0;i<120;i++)
-drops.push({x:Math.random()*c.width,y:Math.random()*c.height,r:2+Math.random()*3,s:1+Math.random()*2});
+/* Side EQ */
+const eqL=document.getElementById('eqL');
+const eqR=document.getElementById('eqR');
+for(let i=0;i<12;i++){
+eqL.appendChild(document.createElement('span'));
+eqR.appendChild(document.createElement('span'));
+}
+function updateEQ(b){
+[...eqL.children,...eqR.children].forEach(e=>{
+e.style.opacity=Math.min(1,b/600)
+})
+}
 
-function rain(){
-x.clearRect(0,0,c.width,c.height);
-drops.forEach(d=>{
-x.beginPath();
-x.arc(d.x,d.y,d.r,0,Math.PI*2);
-x.fillStyle='rgba(180,255,255,.6)';
-x.fill();
-d.y+=d.s;
-if(d.y>c.height){
-x.beginPath();
-x.arc(d.x,c.height,8,0,Math.PI*2);
-x.strokeStyle='rgba(180,255,255,.3)';
-x.stroke();
-d.y=0;
+/* Rain */
+setInterval(()=>{
+const d=document.createElement('div');
+d.className='drop';
+d.style.left=Math.random()*innerWidth+'px';
+d.style.top='-20px';
+document.body.appendChild(d);
+let y=-20;
+const fall=setInterval(()=>{
+y+=4;
+d.style.top=y+'px';
+if(y>innerHeight){
+clearInterval(fall);
+d.remove();
 }
-});
-requestAnimationFrame(rain);
-}
-rain();
+},16);
+},120);
 </script>
 
 </body>
